@@ -1,0 +1,14 @@
+{
+  "participant_id": "P001",
+  "experimenter": "Mario Rossi",
+  "condition": "A",
+  "wordlist_file": "wordlist.csv",
+  "start_time": "2025-05-21T14:30:00",
+  "interruption_time": "2025-05-21T15:10:45",
+  "resume_time": null,  // sarà compilato al momento della ripresa
+  "end_time": null,     // sarà compilato al completamento dell'esperimento
+  "interruption_type": "manual",  // o "error", "crash", etc.
+  "completed_trials": [1, 2, 3],
+  "current_trial": 4,    // il prossimo trial da iniziare
+  "interrupted": true    // flag che indica se l'esperimento ha subito interruzioni
+}
