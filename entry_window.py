@@ -7,6 +7,7 @@ from settings import PATHS, ENTRY_WINDOW, ENTRY_WINDOW_VISUAL, MESSAGES
 from validators import validate_participant_id
 from session_manager import create_session_log, load_session, create_participant_folder, validate_csv
 from controls import MainWindow
+from settings import EXPERIMENT
 
 class EntryWindow(tk.Toplevel):
     def __init__(self, master):
@@ -347,36 +348,55 @@ class EntryWindow(tk.Toplevel):
 
 # Support fuction to load wordlist from CSV
 def load_wordlist(filepath):
-    """Load words from CSV file.
-    
-    Returns:
-        List[List[str]]: A list of # trials, each containing # words
-    """
+    """Load words from CSV file."""
     import csv
-    words_list = []
+    training_trials = []
+    main_trials = []
     
     try:
         with open(filepath, 'r', encoding='utf-8') as csvfile:
-            reader = csv.reader(csvfile)
+            # Change delimiter to semicolon
+            reader = csv.reader(csvfile, delimiter=';')
             next(reader)  # Skip header row
             
-            # Can be modified to hadle different number of trials: to do so modifify
-            # the arg of len(trial_words) != # --> # of words per trial
-            # the arg of len(words_list) != # -->  # of trials
-            # 
-            for row in reader:
-                # Skip trial number (first column) and get only the words
-                trial_words = row[1:]
-                if len(trial_words) != 5:  # Each trial should have exactly 5 words
-                    raise ValueError(f"Invalid number of words in row: {len(trial_words)}")
-                words_list.append(trial_words)
+            # Load all rows
+            all_rows = list(reader)
             
-            if len(words_list) != 10: # Ensure exactly 10 trials 
-                raise ValueError(f"CSV must contain exactly 10 trials. Found: {len(words_list)}")
-                
-            return words_list
+            # Debug print
+            print(f"Total rows read: {len(all_rows)}")
+            print("First row content:", all_rows[0] if all_rows else "No rows")
             
+            # Extract training trials (first 2 rows)
+            for i in range(min(EXPERIMENT['TRAINING']['TRIALS'], len(all_rows))):
+                # Get all columns except first (trial number)
+                trial_words = [word.strip() for word in all_rows[i][1:] if word.strip()]
+                print(f"Training trial {i+1} raw data: {all_rows[i]}")
+                print(f"Training trial {i+1} words: {len(trial_words)} - {trial_words}")
+                if trial_words:  # Only add if row contains words
+                    training_trials.append(trial_words)
+            
+            # Extract main trials (remaining rows)
+            for i, row in enumerate(all_rows[EXPERIMENT['TRAINING']['TRIALS']:]):
+                trial_words = [word.strip() for word in row[1:] if word.strip()]
+                if trial_words:  # Only add if row contains words
+                    main_trials.append(trial_words)
+                    print(f"Main trial {i+1}: {len(trial_words)} words loaded")
+            
+            # Debug print
+            print(f"Training trials loaded: {len(training_trials)}")
+            print(f"Main trials loaded: {len(main_trials)}")
+            
+            if not training_trials and not main_trials:
+                raise ValueError("No valid words found in the CSV file. Please check the file format.")
+            
+            # Combine trials in correct order
+            return training_trials + main_trials
+
     except Exception as e:
         messagebox.showerror("Error Loading Wordlist", 
-                            f"Failed to load wordlist: {str(e)}")
-        return None 
+                            f"Failed to load wordlist:\nError type: {type(e)}\nError: {str(e)}\n\n"
+                            f"Expected format:\n"
+                            f"trial;word1;word2;word3;...\n"
+                            f"1;apple;banana;orange;...\n"
+                            f"2;cat;dog;fish;...\n")
+        return None

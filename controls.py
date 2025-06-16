@@ -41,11 +41,14 @@ class MainWindow(tk.Tk):
 
     def _setup_trial_manager(self):
         """Initialize trial management"""
-        if not self.words_list or len(self.words_list) != EXPERIMENT['MAX_TRIALS']:
-            raise ValueError(f"Word list must contain exactly {EXPERIMENT['MAX_TRIALS']} trials")
+        if not self.words_list:
+            raise ValueError("No words provided")
+        
+        total_trials = (EXPERIMENT['TRAINING']['TRIALS'] + 
+                       EXPERIMENT['MAIN']['TRIALS'])
                             
         self.trial_manager = TrialManager(
-            max_trials=EXPERIMENT['MAX_TRIALS'],
+            max_trials=total_trials,
             participant_id=self.participant_id
         )
         self._words_list = list(self.words_list[self.start_trial - 1])

@@ -33,7 +33,14 @@ VISUAL = {
 
 # Experimental Parameters
 EXPERIMENT = {
-    'MAX_TRIALS': 10,
+    'TRAINING': {
+        'TRIALS': 2,  # Number of training trials
+        'WORDS_PER_TRIAL': 10  # Words per training trial
+    },
+    'MAIN': {
+        'TRIALS': 9,  # Number of main trials
+        'WORDS_PER_TRIAL': 17  # Words per main trial
+    },
     'WORD_JITTER': {
         'RANGE_X': 60,
         'RANGE_Y': 60
@@ -109,7 +116,7 @@ MESSAGES = {
 
 # ----------------- trialmanager.py Settings
 TRIAL_MANAGER = {
-    'MAX_TRIALS': 10,
+    'MAX_TRIALS': 12,
     'WORDS_PER_TRIAL': 5,
     'TIMESTAMP_FORMAT': '%Y%m%d_%H%M%S',
     'PATHS': {
@@ -123,8 +130,8 @@ TRIAL_MANAGER = {
         'ERRORS': {
             'NO_PARTICIPANT': 'participant_id is required for saving results',
             'NO_WORDS': 'No words provided for saving',
-            'TRIALS_EXCEEDED': 'All trials have already been saved',
-            'WRONG_WORD_COUNT': 'Unexpected number of saved words. Expected {expected}, got {actual}'
+            'TRIALS_EXCEEDED': 'Maximum number of trials reached',
+            'WRONG_WORD_COUNT': 'Trial completed with {actual} words'
         }
     },
     'COORDINATES': {
@@ -137,8 +144,8 @@ TRIAL_MANAGER = {
 # ----------------- draggable.py Settings
 DRAGGABLE_WORD = {
     'SIZE': {
-        'DEFAULT_WIDTH': 40,
-        'DEFAULT_HEIGHT': 40
+        'DEFAULT_WIDTH': 60,
+        'DEFAULT_HEIGHT': 60
     },
     'COLORS': {
         'FILL': 'gray',
@@ -148,7 +155,7 @@ DRAGGABLE_WORD = {
     },
     'FONT': {
         'FAMILY': 'Arial',
-        'SIZE': 9,
+        'SIZE': 10,
         'STYLE': ''  # Normal
     },
     'OUTLINE': {
@@ -170,8 +177,8 @@ CANVAS_INTERACTION = {
 # ----------------- wordspace.py Settings
 WORDSPACE = {
     'CANVAS': {
-        'DEFAULT_WIDTH': 1200,
-        'DEFAULT_HEIGHT': 800,
+        'DEFAULT_WIDTH': 1240,
+        'DEFAULT_HEIGHT': 700,
         'BACKGROUND_COLOR': 'white',
         'MARGINS': {
             'SAFETY_MARGIN': 50,

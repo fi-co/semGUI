@@ -2,6 +2,7 @@ import os
 import json
 import datetime
 import csv
+from settings import EXPERIMENT 
 
 def create_participant_folder(participant_id):
     """Create a folder for the participant if it doesn't exist"""
@@ -52,22 +53,24 @@ def load_session(filepath):
 
 def update_session_log(session_data, completed_trial=None, interrupted=False):
     """Update the session log with the current state"""
-    # If the trial was completed previously, add it up to the list
+    total_trials = (EXPERIMENT['TRAINING']['TRIALS'] + 
+                   EXPERIMENT['MAIN']['TRIALS'])
+    
     if completed_trial is not None:
         if completed_trial not in session_data["completed_trials"]:
             session_data["completed_trials"].append(completed_trial)
-            session_data["current_trial"] = completed_trial + 1 if completed_trial < 10 else 10 
-    
+            # Simply increment trial counter without assumptions about total
+            session_data["current_trial"] = completed_trial + 1
     
     if interrupted:
         session_data["interruption_time"] = datetime.datetime.now().isoformat()
         session_data["interrupted"] = True
     
-    
-    if len(session_data["completed_trials"]) == 10:  # Assuming 10 trials NEED TO BE MODIFIED if you acted on settings.py/load_wordlist() 
+    # Mark completion when all trials are done
+    if len(session_data["completed_trials"]) >= total_trials:
         session_data["end_time"] = datetime.datetime.now().isoformat()
     
-    # Save JSON for validation
+    # Save JSON
     log_path = os.path.join("data", session_data["participant_id"], "log.json")
     with open(log_path, 'w') as f:
         json.dump(session_data, f, indent=2)
