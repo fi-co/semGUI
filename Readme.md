@@ -1,4 +1,4 @@
-# SemGUI: Semantic Space Visualization Tool
+# SemGUI: a tool for semantic similarity experiments
 
 ![Status](https://img.shields.io/badge/status-beta-orange)
 ![License](https://img.shields.io/badge/license-MIT-blue)
