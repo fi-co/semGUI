@@ -49,12 +49,12 @@ EXPERIMENT = {
 
 # Text Strings
 TEXT = {
-    'WINDOW_TITLE': 'Word Relatedness GUI',
-    'PANEL_TITLE': 'Available Words',
+    'WINDOW_TITLE': 'semGUI - ARENA',
+    'PANEL_TITLE': 'PAROLE DISPONIBILI',
     'BUTTONS': {
-        'END_TRIAL': 'End Trial',
-        'RECENTER': 'Recenter POV',
-        'HIGHLIGHT': 'Highlight Mode: {}'
+        'END_TRIAL': 'FINE PROVA',
+        'RECENTER': 'RICENTRA',
+        'HIGHLIGHT': 'EVIDENZIATORE: {}'
     },
     'MESSAGES': {
         'NO_MORE_WORDS': 'No more words to add.',

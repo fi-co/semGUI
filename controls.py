@@ -124,7 +124,7 @@ class MainWindow(tk.Tk):
     def update_title(self):
         """Update window title with current trial number"""
         current_trial = min(self.trial_manager.get_trial_number(), self.trial_manager.max_trials)
-        self.title(f"Word Relatedness GUI - Trial {current_trial} of {self.trial_manager.max_trials}")
+        self.title(f"semGUI ARENA - Trial {current_trial} of {self.trial_manager.max_trials}")
 
     def reset_for_next_trial(self):
         """Reset everything for the next trial"""
